@@ -1,29 +1,25 @@
-import React, {FC, useState} from "react";
-
-interface LocationSearchProps {
-  onSearch: (search: string) => void;
+import React, {FC} from "react";
+import {WeatherLocation} from '../model/index'
+interface LocationTableProps {
+  locations: string[];
+  name: WeatherLocation | null;
 }
 
-const LocationSearch: FC<LocationSearchProps> = ({onSearch}) => {
-  const [locationSearch, setLocationSearch] = useState('');
-  const disableSearch = locationSearch.trim() === '';
-
-  const addLocation = () => {
-    onSearch(locationSearch);
-    setLocationSearch('');
-  };
-
-  return (
-    <div>
-      <label>
-        Add Location
-        <input className="ml-1 mr-1" type="text" value={locationSearch}
-               onChange={e => setLocationSearch(e.target.value)}/>
-      </label>
-      <button className="btn btn-primary"
-              onClick={addLocation} disabled={disableSearch}>Search</button>
-    </div>
-  );
-};
-
-export default LocationSearch;
+export const LocationTable: FC<LocationTableProps> = ({locations}) =>
+  <div>
+    <h2>Locations</h2>
+    <table className="table table-hover">
+      <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      {locations.map((location, index) =>
+        <tr key={index}>
+          <td>{location.name}</td>
+        </tr>
+      )}
+      </tbody>
+    </table>
+  </div>;
