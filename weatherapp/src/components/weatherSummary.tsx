@@ -2,45 +2,29 @@ import React, {FC, useEffect, useState} from "react";
 import WeatherEntry from "./weatherEntry";
 import {Weather, WeatherLocation} from "../model/index";
 import {readWeather} from "../services/index";
-import './WeatherSummary.scss';
 
 interface WeatherSummaryProps {
   location: WeatherLocation | null;
 }
 
-export const WeatherSummary: FC<WeatherSummaryProps> = ({location}) => {
+const WeatherSummary: FC<WeatherSummaryProps> = ({location}) => {
   const [weather, setWeather] = useState<Weather | null>(null);
-  const [forecast, setForecast] = useState<Weather[] | null>(null);
 
   useEffect(() => {
-    (async function () {
-      if (location) {
-        const [weather] = await Promise.all([
-          readWeather(location.id),
-        ]);
-        setWeather(weather);
-      }
-    })()
+    if (location) {
+      readWeather(location.id).then(weather => setWeather(weather));
+    }
   }, [location]);
 
-  if (!location || !weather || !forecast) return null;
+  if (!location || !weather) return null;
 
   return (
     <div>
       <hr/>
       <h2>{location.name}</h2>
       <WeatherEntry weather={weather}/>
-
-      <h2>Forecast</h2>
-      <div>
-        <ol style={({whiteSpace: 'nowrap'})}>
-          {forecast.map(timePoint =>
-            <li key={timePoint.dt}>
-              <WeatherEntry weather={timePoint}/>
-            </li>
-          )}
-        </ol>
-      </div>
     </div>
   );
 };
+
+export default  WeatherSummary;

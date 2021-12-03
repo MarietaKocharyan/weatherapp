@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 
-import { WeatherLocation } from './model/index';
+import WeatherSummary from './components/weatherSummary';
 import LocationSearch from "./components/locationSearch";
 import LocationTable from "./components/locationTable";
 import {searchLocation} from './services/index';
+import { WeatherLocation } from './model/index';
+
 
 function App() {
   const [locations, setLocations] = useState<WeatherLocation[]>([]);
@@ -39,6 +41,7 @@ function App() {
       <LocationTable locations={locations}
                      current={currentLocation}
                      onSelect={location => setCurrentLocation(location)}/>
+                           <WeatherSummary location={currentLocation}/>
     </div>
   );
 }
